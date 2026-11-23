@@ -4,46 +4,34 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 checkout scm
-                echo 'GitHub checkout successful'
             }
         }
 
         stage('Verify Python') {
             steps {
-                container('python') {
-                    sh 'python --version'
-                    sh 'pip --version'
-                }
+                sh 'python --version'
+                sh 'pip --version'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                container('python') {
-                    sh 'pip install -r requirements.txt'
-                }
+                sh 'pip install -r requirements.txt'
             }
         }
 
         stage('Test Application') {
             steps {
-                container('python') {
-                    sh '''
-                        python -c "import app; print('Application import successful')"
-                    '''
-                }
+                sh 'python -c "import app; print(\'Application import successful\')"'
             }
         }
 
         stage('Build') {
             steps {
-                container('python') {
-                    sh 'python -m compileall .'
-                }
+                sh 'python -m compileall .'
             }
         }
     }
